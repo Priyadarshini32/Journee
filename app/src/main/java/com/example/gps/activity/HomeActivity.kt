@@ -1,12 +1,160 @@
 package com.example.gps.activity
 
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.gps.R
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.*
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import okhttp3.*
+import org.json.JSONObject
+import java.io.IOException
 
-class HomeActivity : ComponentActivity() {
+class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
+    private lateinit var mMap: GoogleMap
+    private var fromLocation: LatLng? = null
+    private var toLocation: LatLng? = null
+    private val apiKey = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        // Initialize Places API
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext, apiKey)
+        }
+
+        // Set up the map
+        val mapFragment = supportFragmentManager.findFragmentById(R.id.map_fragment) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+        // Set up autocomplete for pickup location
+        val fromAutoComplete = supportFragmentManager.findFragmentById(R.id.from_location_autocomplete) as AutocompleteSupportFragment
+        fromAutoComplete.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG))
+        fromAutoComplete.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                fromLocation = place.latLng
+                updateMap()
+            }
+
+            override fun onError(status: com.google.android.gms.common.api.Status) {
+                Toast.makeText(this@HomeActivity, "Error: $status", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        // Set up autocomplete for destination location
+        val toAutoComplete = supportFragmentManager.findFragmentById(R.id.to_location_autocomplete) as AutocompleteSupportFragment
+        toAutoComplete.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG))
+        toAutoComplete.setOnPlaceSelectedListener(object : PlaceSelectionListener {
+            override fun onPlaceSelected(place: Place) {
+                toLocation = place.latLng
+                updateMap()
+            }
+
+            override fun onError(status: com.google.android.gms.common.api.Status) {
+                Toast.makeText(this@HomeActivity, "Error: $status", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+        mMap.uiSettings.isZoomControlsEnabled = true
+    }
+
+    private fun updateMap() {
+        mMap.clear()
+        if (fromLocation != null) {
+            mMap.addMarker(MarkerOptions().position(fromLocation!!).title("Pickup"))
+        }
+        if (toLocation != null) {
+            mMap.addMarker(MarkerOptions().position(toLocation!!).title("Destination"))
+        }
+        if (fromLocation != null && toLocation != null) {
+            getRoute(fromLocation!!, toLocation!!)
+        }
+    }
+
+    private fun getRoute(origin: LatLng, destination: LatLng) {
+        val url = "https://maps.googleapis.com/maps/api/directions/json?" +
+                "origin=${origin.latitude},${origin.longitude}" +
+                "&destination=${destination.latitude},${destination.longitude}" +
+                "&key=$apiKey"
+
+        val client = OkHttpClient()
+        val request = Request.Builder().url(url).build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread {
+                    Toast.makeText(this@HomeActivity, "Failed to get route", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseData = response.body?.string()
+                val json = JSONObject(responseData!!)
+                val routes = json.getJSONArray("routes")
+                if (routes.length() > 0) {
+                    val points = mutableListOf<LatLng>()
+                    val steps = routes.getJSONObject(0)
+                        .getJSONArray("legs")
+                        .getJSONObject(0)
+                        .getJSONArray("steps")
+
+                    for (i in 0 until steps.length()) {
+                        val polyline = steps.getJSONObject(i)
+                            .getJSONObject("polyline")
+                            .getString("points")
+                        points.addAll(decodePolyline(polyline))
+                    }
+
+                    runOnUiThread {
+                        mMap.addPolyline(PolylineOptions().addAll(points).width(10f).color(0xFF3D9040.toInt()))
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(origin, 12f))
+                    }
+                }
+            }
+        })
+    }
+
+    private fun decodePolyline(encoded: String): List<LatLng> {
+        val poly = mutableListOf<LatLng>()
+        var index = 0
+        val len = encoded.length
+        var lat = 0
+        var lng = 0
+
+        while (index < len) {
+            var b: Int
+            var shift = 0
+            var result = 0
+            do {
+                b = encoded[index++].code - 63
+                result = result or (b and 0x1F shl shift)
+                shift += 5
+            } while (b >= 0x20)
+            lat += if (result and 1 != 0) result.inv() shr 1 else result shr 1
+
+            shift = 0
+            result = 0
+            do {
+                b = encoded[index++].code - 63
+                result = result or (b and 0x1F shl shift)
+                shift += 5
+            } while (b >= 0x20)
+            lng += if (result and 1 != 0) result.inv() shr 1 else result shr 1
+
+            poly.add(LatLng(lat / 1E5, lng / 1E5))
+        }
+        return poly
     }
 }
