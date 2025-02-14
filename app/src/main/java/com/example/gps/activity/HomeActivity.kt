@@ -1,7 +1,9 @@
 package com.example.gps.activity
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import com.example.gps.R
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -26,6 +28,19 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        // Find the button by ID
+        val bookRideButton: Button = findViewById(R.id.book_ride_button)
+
+        // Set click listener
+        bookRideButton.setOnClickListener {
+            if (fromLocation == null || toLocation == null) {
+                Toast.makeText(this, "Please select both pickup and destination", Toast.LENGTH_SHORT).show()
+            } else {
+                bookRide()
+            }
+        }
+
 
         // Initialize Places API
         if (!Places.isInitialized()) {
@@ -64,6 +79,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         })
     }
+
 
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
@@ -157,4 +173,60 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         return poly
     }
+
+    private fun bookRide() {
+        if (fromLocation == null || toLocation == null) {
+            Toast.makeText(this, "Please select both pickup and destination", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Store source and destination coordinates
+        val sourceLat = fromLocation!!.latitude
+        val sourceLng = fromLocation!!.longitude
+        val destLat = toLocation!!.latitude
+        val destLng = toLocation!!.longitude
+
+//        Toast.makeText(this, "Ride booked from ($sourceLat, $sourceLng) to ($destLat, $destLng)", Toast.LENGTH_LONG).show()
+
+        // Call function to get ETA
+        getETA(fromLocation!!, toLocation!!)
+    }
+
+    private fun getETA(origin: LatLng, destination: LatLng) {
+        val url = "https://maps.googleapis.com/maps/api/distancematrix/json?" +
+                "origins=${origin.latitude},${origin.longitude}" +
+                "&destinations=${destination.latitude},${destination.longitude}" +
+                "&key=$apiKey"
+
+        val client = OkHttpClient()
+        val request = Request.Builder().url(url).build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                runOnUiThread {
+                    Toast.makeText(this@HomeActivity, "Failed to get ETA", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseData = response.body?.string()
+                val json = JSONObject(responseData!!)
+                val rows = json.getJSONArray("rows")
+                if (rows.length() > 0) {
+                    val elements = rows.getJSONObject(0).getJSONArray("elements")
+                    if (elements.length() > 0) {
+                        val duration = elements.getJSONObject(0).getJSONObject("duration")
+                        val etaText = duration.getString("text") // Example: "15 mins"
+                        val etaValue = duration.getInt("value") // Time in seconds
+
+                        runOnUiThread {
+                            Toast.makeText(this@HomeActivity, "Estimated Arrival: $etaText", Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+
 }
