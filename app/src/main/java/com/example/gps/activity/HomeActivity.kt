@@ -183,14 +183,6 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             return
         }
 
-        // Store source and destination coordinates
-        val sourceLat = fromLocation!!.latitude
-        val sourceLng = fromLocation!!.longitude
-        val destLat = toLocation!!.latitude
-        val destLng = toLocation!!.longitude
-
-//        Toast.makeText(this, "Ride booked from ($sourceLat, $sourceLng) to ($destLat, $destLng)", Toast.LENGTH_LONG).show()
-
         // Call function to get ETA
         getETA(fromLocation!!, toLocation!!)
     }
@@ -223,13 +215,12 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                         val etaValue = duration.getInt("value") // Time in seconds
 
                         runOnUiThread {
-                            Toast.makeText(this@HomeActivity, "Estimated Arrival: $etaText", Toast.LENGTH_LONG).show()
+                            Snackbar.make(findViewById(android.R.id.content), "Estimated Arrival: $etaText", Snackbar.LENGTH_LONG).show()
                         }
                     }
                 }
             }
         })
     }
-
 
 }
