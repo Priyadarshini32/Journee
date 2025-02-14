@@ -1,13 +1,26 @@
+import java.util.Properties
+
+// Load secrets.properties file
+val secretsPropertiesFile = rootProject.file("secrets.properties")
+val secretsProperties = Properties()
+if (secretsPropertiesFile.exists()) {
+    secretsProperties.load(secretsPropertiesFile.inputStream())
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
 
-
 android {
     namespace = "com.example.gps"
     compileSdk = 35
+
+    buildFeatures {
+        buildConfig = true  // Ensure BuildConfig is generated
+        compose = true
+    }
 
     defaultConfig {
         applicationId = "com.example.gps"
@@ -17,6 +30,11 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Ensure MAPS_API_KEY is set properly
+        val mapsApiKey = secretsProperties["MAPS_API_KEY"]?.toString() ?: ""
+        buildConfigField("String", "MAPS_API_KEY", "\"$mapsApiKey\"")
+        manifestPlaceholders["MAPS_API_KEY"] = mapsApiKey
     }
 
     buildTypes {
@@ -35,13 +53,9 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
-        compose = true
-    }
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

@@ -18,12 +18,15 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
+import com.example.gps.BuildConfig
+
 
 class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private var fromLocation: LatLng? = null
     private var toLocation: LatLng? = null
-    private val apiKey = ""
+    private val apiKey = BuildConfig.MAPS_API_KEY
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
