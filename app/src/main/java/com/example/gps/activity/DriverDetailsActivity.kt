@@ -1,10 +1,18 @@
 package com.example.gps.activity
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import com.example.gps.R
 
 class DriverDetailsActivity : AppCompatActivity() {
@@ -34,11 +42,11 @@ class DriverDetailsActivity : AppCompatActivity() {
         submitRatingButton = findViewById(R.id.submit_rating_button)
         driverRatingBar = findViewById(R.id.driver_rating_bar)
 
-        // Retrieve driver details from intent (Corrected key names)
+        // Retrieve driver details from intent
         val name = intent.getStringExtra("driver_name") ?: "Unknown"
         val vehicleType = intent.getStringExtra("vehicle_type") ?: "Unknown"
         val contact = intent.getStringExtra("driver_contact") ?: "Unknown"
-        val experience = intent.getIntExtra("driver_experience", 0) // Corrected key
+        val experience = intent.getIntExtra("driver_experience", 0)
 
         // Set driver details in UI
         driverName.text = "Driver Name : $name"
@@ -65,9 +73,56 @@ class DriverDetailsActivity : AppCompatActivity() {
     }
 
     private fun finishRide() {
+        showRideCompletionNotification() // Show notification
+
+        // Navigate to home screen after 2 seconds
         val intent = Intent(this, HomeActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+
+    private fun showRideCompletionNotification() {
+        val channelId = "ride_channel"
+
+        // Create a Notification Channel (for API 26+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Ride Notifications",
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "Notifications for completed rides"
+            }
+
+            val manager = getSystemService(NotificationManager::class.java)
+            manager.createNotificationChannel(channel)
+        }
+
+        // Create and display the notification
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setSmallIcon(R.drawable.app_logo) // Ensure this icon exists in `res/drawable`
+            .setContentTitle("Ride Completed")
+            .setContentText("Thank you for riding with us!")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true) // Dismisses notification when tapped
+            .build()
+
+        val notificationManager = NotificationManagerCompat.from(this)
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        notificationManager.notify(1, notification)
     }
 }
