@@ -38,6 +38,8 @@
             android:label="Home">
         </activity>
 
+        <activity android:name=".activity.SelectVehicleActivity" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

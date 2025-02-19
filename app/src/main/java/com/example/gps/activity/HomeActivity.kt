@@ -1,5 +1,6 @@
 package com.example.gps.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -26,6 +27,7 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
     private var fromLocation: LatLng? = null
     private var toLocation: LatLng? = null
     private val apiKey = BuildConfig.MAPS_API_KEY
+    private val REQUEST_VEHICLE_SELECTION = 1001
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,14 +37,15 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         // Find the button by ID
         val bookRideButton: Button = findViewById(R.id.book_ride_button)
 
-        // Set click listener
         bookRideButton.setOnClickListener {
             if (fromLocation == null || toLocation == null) {
                 Toast.makeText(this, "Please select both pickup and destination", Toast.LENGTH_SHORT).show()
             } else {
-                bookRide()
+                val intent = Intent(this, SelectVehicleActivity::class.java)
+                startActivityForResult(intent, REQUEST_VEHICLE_SELECTION)
             }
         }
+
 
 
         // Initialize Places API
@@ -186,6 +189,20 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
         // Call function to get ETA
         getETA(fromLocation!!, toLocation!!)
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_VEHICLE_SELECTION && resultCode == RESULT_OK) {
+            val selectedVehicle = data?.getStringExtra("selected_vehicle")
+
+            if (selectedVehicle != null) {
+                Toast.makeText(this, "Selected: $selectedVehicle", Toast.LENGTH_SHORT).show()
+                getETA(fromLocation!!, toLocation!!) // Fetch and show ETA after vehicle selection
+            }
+        }
+    }
+
 
     private fun getETA(origin: LatLng, destination: LatLng) {
         val url = "https://maps.googleapis.com/maps/api/distancematrix/json?" +
