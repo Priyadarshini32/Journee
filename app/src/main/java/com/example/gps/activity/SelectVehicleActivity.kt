@@ -56,7 +56,7 @@ class SelectVehicleActivity : AppCompatActivity() {
         }
 
         startRideButton.setOnClickListener {
-//            Toast.makeText(this, "Ride started successfully!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Ride started successfully!", Toast.LENGTH_SHORT).show()
             sendRideNotification() // Send the initial notification
         }
 
