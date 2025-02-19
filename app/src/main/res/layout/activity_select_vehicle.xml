@@ -5,31 +5,36 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    android:gravity="center">
+    android:gravity="center"
+    android:background="#F5F5F5">
 
     <RadioGroup
         android:id="@+id/vehicle_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:padding="10dp"
+        android:elevation="4dp"
+        android:layout_marginBottom="20dp">
 
         <RadioButton
             android:id="@+id/radio_bike"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bike" />
+            android:text="Bike"/>
 
         <RadioButton
             android:id="@+id/radio_auto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Auto" />
+            android:text="Auto"/>
 
         <RadioButton
             android:id="@+id/radio_car"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Car" />
+            android:text="Car"/>
     </RadioGroup>
 
     <Button
@@ -37,5 +42,65 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Confirm"
-        android:layout_marginTop="20dp"/>
+        android:backgroundTint="@color/teal_700"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="10dp"/>
+
+    <LinearLayout
+        android:id="@+id/ride_details_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:background="@android:color/white"
+        android:elevation="4dp"
+        android:visibility="gone"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:id="@+id/ride_details_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ride Details"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:paddingBottom="10dp"/>
+
+        <TextView
+            android:id="@+id/selected_vehicle_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vehicle: "
+            android:textSize="16sp"
+            android:textColor="@android:color/black"/>
+
+        <TextView
+            android:id="@+id/eta_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estimated Arrival Time: --"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_gravity="center_horizontal"/>
+
+
+        <Button
+            android:id="@+id/start_ride_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start Ride"
+            android:backgroundTint="@color/teal_700"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/cancel_ride_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel Ride"
+            android:backgroundTint="@android:color/holo_red_light"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="10dp"/>
+    </LinearLayout>
 </LinearLayout>

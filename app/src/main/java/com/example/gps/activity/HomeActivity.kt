@@ -41,10 +41,10 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
             if (fromLocation == null || toLocation == null) {
                 Toast.makeText(this, "Please select both pickup and destination", Toast.LENGTH_SHORT).show()
             } else {
-                val intent = Intent(this, SelectVehicleActivity::class.java)
-                startActivityForResult(intent, REQUEST_VEHICLE_SELECTION)
+                getETA(fromLocation!!, toLocation!!) // Fetch ETA first
             }
         }
+
 
 
 
@@ -229,15 +229,18 @@ class HomeActivity : AppCompatActivity(), OnMapReadyCallback {
                     if (elements.length() > 0) {
                         val duration = elements.getJSONObject(0).getJSONObject("duration")
                         val etaText = duration.getString("text") // Example: "15 mins"
-                        val etaValue = duration.getInt("value") // Time in seconds
 
                         runOnUiThread {
-                            Snackbar.make(findViewById(android.R.id.content), "Estimated Arrival: $etaText", Snackbar.LENGTH_LONG).show()
+                            // Start SelectVehicleActivity with ETA
+                            val intent = Intent(this@HomeActivity, SelectVehicleActivity::class.java)
+                            intent.putExtra("selected_eta", etaText) // Pass ETA to next screen
+                            startActivityForResult(intent, REQUEST_VEHICLE_SELECTION)
                         }
                     }
                 }
             }
         })
     }
+
 
 }
