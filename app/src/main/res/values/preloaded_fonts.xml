@@ -5,7 +5,11 @@
         <item>@font/abyssinica_sil</item>
         <item>@font/aclonica</item>
         <item>@font/adlam_display</item>
+        <item>@font/aladin</item>
         <item>@font/alegreya</item>
+        <item>@font/amaranth_italic</item>
         <item>@font/fredericka_the_great</item>
+        <item>@font/londrina_solid_light</item>
+        <item>@font/purple_purse</item>
     </array>
 </resources>

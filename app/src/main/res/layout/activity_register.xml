@@ -196,14 +196,15 @@
     <TextView
         android:id="@+id/catchy_tagline2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="57dp"
         android:layout_marginBottom="20dp"
+        android:clickable="true"
+        android:focusable="true"
         android:fontFamily="@font/abyssinica_sil"
         android:gravity="center"
+        android:text="Sign in"
         android:textColor="#673AB7"
         android:textSize="18sp"
-        android:textStyle="bold"
-        android:clickable="true"
-        android:focusable="true"/>
+        android:textStyle="bold" />
 
 </LinearLayout>

@@ -16,6 +16,7 @@ class ProgressActivity : AppCompatActivity() {
     private lateinit var loadingText: TextView
     private lateinit var cancelLoadingButton: Button
     private val handler = Handler(Looper.getMainLooper())
+    private var isCancelled = false  // Flag to track cancellation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +30,7 @@ class ProgressActivity : AppCompatActivity() {
         startProgressBar()
 
         cancelLoadingButton.setOnClickListener {
+            isCancelled = true  // Mark as cancelled
             redirectToHome()
         }
     }
@@ -43,10 +45,12 @@ class ProgressActivity : AppCompatActivity() {
         val runnable = object : Runnable {
             override fun run() {
                 if (progress < progressBar.max) {
-                    progress++
-                    progressBar.progress = progress
-                    handler.postDelayed(this, interval.toLong())
-                } else {
+                    if (!isCancelled) { // Check if the process was not cancelled
+                        progress++
+                        progressBar.progress = progress
+                        handler.postDelayed(this, interval.toLong())
+                    }
+                } else if (!isCancelled) { // Only start ride if not cancelled
                     rideStarted()
                 }
             }
@@ -55,7 +59,19 @@ class ProgressActivity : AppCompatActivity() {
     }
 
     private fun rideStarted() {
-        val intent = Intent(this, DriverDetailsActivity::class.java)
+        if (isCancelled) return // Prevent navigation if cancelled
+
+        val driverName = intent.getStringExtra("driver_name")
+        val vehicleType = intent.getStringExtra("vehicle_type")
+        val driverContact = intent.getStringExtra("driver_contact")
+        val driverExperience = intent.getIntExtra("driver_experience", 0)
+
+        val intent = Intent(this, DriverDetailsActivity::class.java).apply {
+            putExtra("driver_name", driverName)
+            putExtra("vehicle_type", vehicleType)
+            putExtra("driver_contact", driverContact)
+            putExtra("driver_experience", driverExperience)
+        }
         startActivity(intent)
         finish()
     }

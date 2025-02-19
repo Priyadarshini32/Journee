@@ -37,11 +37,11 @@
 
     <Button
         android:id="@+id/cancel_loading_button"
-        android:layout_width="wrap_content"
+        android:layout_width="213dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:backgroundTint="@android:color/holo_red_light"
-        android:fontFamily="@font/abyssinica_sil"
+        android:fontFamily="@font/aclonica"
         android:text="Cancel Ride"
         android:textColor="@android:color/white" />
 </LinearLayout>

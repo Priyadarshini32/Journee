@@ -23,28 +23,40 @@ class DriverDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_driver_details)
 
-        driverVehicle = findViewById(R.id.driver_vehicle)
-
-        val vehicleType = intent.getStringExtra("vehicle_type") ?: "Unknown Vehicle"
-        driverVehicle.text = "Vehicle: $vehicleType"
-    driverImage = findViewById(R.id.driver_image)
+        // Initialize UI elements
+        driverImage = findViewById(R.id.driver_image)
         driverName = findViewById(R.id.driver_name)
+        driverVehicle = findViewById(R.id.driver_vehicle)
         driverContact = findViewById(R.id.driver_contact)
         driverRidesAttended = findViewById(R.id.driver_rides_attended)
         endRideButton = findViewById(R.id.end_ride_button)
-        ratingSection = findViewById(R.id.rating_section) // Fix: Use correct ID
+        ratingSection = findViewById(R.id.rating_section)
         submitRatingButton = findViewById(R.id.submit_rating_button)
         driverRatingBar = findViewById(R.id.driver_rating_bar)
+
+        // Retrieve driver details from intent (Corrected key names)
+        val name = intent.getStringExtra("driver_name") ?: "Unknown"
+        val vehicleType = intent.getStringExtra("vehicle_type") ?: "Unknown"
+        val contact = intent.getStringExtra("driver_contact") ?: "Unknown"
+        val experience = intent.getIntExtra("driver_experience", 0) // Corrected key
+
+        // Set driver details in UI
+        driverName.text = "Driver Name : $name"
+        driverVehicle.text = "Vehicle : $vehicleType"
+        driverContact.text = "Contact Details : $contact"
+        driverRidesAttended.text = "Experience : $experience years"
 
         // Hide rating section initially
         ratingSection.visibility = View.GONE
 
+        // End ride button listener
         endRideButton.setOnClickListener {
             // Show rating section when the ride ends
             ratingSection.visibility = View.VISIBLE
             endRideButton.visibility = View.GONE
         }
 
+        // Submit rating button listener
         submitRatingButton.setOnClickListener {
             val rating = driverRatingBar.rating
             Toast.makeText(this, "You rated the driver $rating stars!", Toast.LENGTH_SHORT).show()
