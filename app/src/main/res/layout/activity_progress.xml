@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/abyssinica_sil"
         android:paddingBottom="10dp"
-        android:text="Confirming your ride..."
+        android:text="Hang tight! We're setting up your ride..."
         android:textColor="#0F3C38"
         android:textSize="18sp"
         android:textStyle="bold" />

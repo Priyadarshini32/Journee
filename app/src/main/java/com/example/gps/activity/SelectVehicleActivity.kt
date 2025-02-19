@@ -61,9 +61,9 @@ class SelectVehicleActivity : AppCompatActivity() {
 
         // Define price per minute for each vehicle
         val vehiclePrices = mapOf(
-            "Bike" to 2,
-            "Auto" to 3,
-            "Cab" to 5
+            "Bike" to 5,
+            "Auto" to 7,
+            "Cab" to 10
         )
 
         // Update each vehicle's price in the UI
