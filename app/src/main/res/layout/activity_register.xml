@@ -18,10 +18,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
-        android:fontFamily="@font/abyssinica_sil"
+        android:fontFamily="@font/fredericka_the_great"
         android:gravity="center"
         android:text="Welcome To Your Journee!"
-        android:textColor="#421212"
+        android:textColor="#6F4505"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:fontFamily="@font/abyssinica_sil"
+        android:fontFamily="@font/aclonica"
         android:gravity="center"
         android:text="SIGN UP "
         android:textColor="#091A18"
@@ -64,7 +64,7 @@
             android:text="Username"
             android:textAlignment="center"
             android:textColor="#7C7979"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <Space
             android:layout_width="wrap_content"
@@ -83,8 +83,8 @@
             android:hint="Enter your username"
             android:inputType="text"
             android:padding="12dp"
-            android:textColor="#1E544E"
-            android:textSize="18sp" />
+            android:textColor="#734707"
+            android:textSize="16sp" />
     </LinearLayout>
 
 
@@ -109,7 +109,7 @@
             android:text="Mail-Id"
             android:textAlignment="center"
             android:textColor="#7C7979"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <Space
             android:layout_width="wrap_content"
@@ -128,8 +128,8 @@
             android:hint="Enter your Mail Id"
             android:inputType="text"
             android:padding="12dp"
-            android:textColor="#1E544E"
-            android:textSize="18sp" />
+            android:textColor="#734707"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <Space
@@ -154,7 +154,7 @@
             android:text="Password"
             android:textAlignment="center"
             android:textColor="#7C7979"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <Space
             android:layout_width="wrap_content"
@@ -173,8 +173,8 @@
             android:hint="Enter your password"
             android:inputType="text"
             android:padding="12dp"
-            android:textColor="#1E544E"
-            android:textSize="18sp" />
+            android:textColor="#734707"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <Button
@@ -184,7 +184,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:backgroundTint="#3D9040"
-        android:fontFamily="@font/abyssinica_sil"
+        android:fontFamily="@font/aclonica"
         android:text="REGISTER"
         android:textColor="#FFFFFF"
         android:textSize="18sp" />
@@ -200,9 +200,10 @@
         android:layout_marginBottom="20dp"
         android:fontFamily="@font/abyssinica_sil"
         android:gravity="center"
-        android:text="Already a User? Sign in Here "
         android:textColor="#673AB7"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:clickable="true"
+        android:focusable="true"/>
 
 </LinearLayout>

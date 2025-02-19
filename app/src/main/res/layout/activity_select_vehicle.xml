@@ -10,7 +10,7 @@
 
     <RadioGroup
         android:id="@+id/vehicle_group"
-        android:layout_width="342dp"
+        android:layout_width="355dp"
         android:layout_height="416dp">
 
         <RadioButton
@@ -19,7 +19,7 @@
             android:layout_height="53dp"
             android:fontFamily="@font/abyssinica_sil"
             android:text="Bike"
-            android:textColor="#395716"
+            android:textColor="#033732"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -46,10 +46,10 @@
                     android:id="@+id/radio_bike_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/abyssinica_sil"
-                    android:text="Estimated time : -- \nPrice Rs --"
-                    android:textColor="#192607"
-                    android:textSize="18sp" />
+                    android:fontFamily="@font/alegreya"
+                    android:text="Estimated time : 60 mins\nPrice Rs 100.00"
+                    android:textColor="#663D01"
+                    android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -59,7 +59,7 @@
             android:layout_height="52dp"
             android:fontFamily="@font/abyssinica_sil"
             android:text="Auto"
-            android:textColor="#395716"
+            android:textColor="#033732"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -77,11 +77,6 @@
                 android:layout_marginEnd="12dp"
                 android:src="@drawable/auto" />
 
-            <Space
-                android:layout_width="35dp"
-                android:layout_height="23dp"
-                android:layout_weight="1" />
-
             <LinearLayout
                 android:layout_width="230dp"
                 android:layout_height="72dp"
@@ -93,12 +88,12 @@
 
                 <TextView
                     android:id="@+id/radio_auto_text"
-                    android:layout_width="match_parent"
+                    android:layout_width="220dp"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/abyssinica_sil"
-                    android:text="Estimated time : -- \nPrice Rs --"
-                    android:textColor="#192607"
-                    android:textSize="18sp" />
+                    android:fontFamily="@font/alegreya"
+                    android:text="Estimated time : 60 mins\nPrice Rs 100.00"
+                    android:textColor="#663D01"
+                    android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
 
@@ -108,7 +103,7 @@
             android:layout_height="51dp"
             android:fontFamily="@font/abyssinica_sil"
             android:text="Cab"
-            android:textColor="#395716"
+            android:textColor="#033732"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -133,23 +128,23 @@
 
                 <TextView
                     android:id="@+id/radio_car_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="208dp"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/abyssinica_sil"
-                    android:text="Estimated time : -- \nPrice Rs --"
-                    android:textColor="#192607"
-                    android:textSize="18sp" />
-
+                    android:fontFamily="@font/alegreya"
+                    android:text="Estimated time : 60 mins\nPrice Rs 100.00"
+                    android:textColor="#663D01"
+                    android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
     </RadioGroup>
 
     <Button
         android:id="@+id/confirm_button"
-        android:layout_width="wrap_content"
-        android:layout_height="57dp"
+        android:layout_width="121dp"
+        android:layout_height="60dp"
         android:layout_marginTop="10dp"
-        android:backgroundTint="@color/teal_700"
+        android:backgroundTint="#4CAF50"
+        android:fontFamily="@font/aclonica"
         android:text="Confirm"
         android:textColor="@android:color/white" />
 
@@ -164,60 +159,11 @@
         android:visibility="gone"
         android:layout_marginTop="20dp">
 
-        <TextView
-            android:id="@+id/ride_details_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ride Details"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:paddingBottom="10dp"/>
+        <include
+            android:id="@+id/driver_details_layout"
+            layout="@layout/activity_driver_details"
+            android:visibility="gone"/>
 
-        <TextView
-            android:id="@+id/selected_vehicle_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Vehicle: "
-            android:textSize="16sp"
-            android:textColor="@android:color/black"/>
-
-        <TextView
-            android:id="@+id/eta_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Estimated Arrival Time: --"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/holo_green_dark"
-            android:layout_marginTop="16dp"/>
-
-        <TextView
-            android:id="@+id/fare_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Estimated Fare: ₹--"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/holo_green_dark"
-            android:layout_marginBottom="12dp" />
-
-        <Button
-            android:id="@+id/start_ride_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Start Ride"
-            android:backgroundTint="@color/teal_700"
-            android:textColor="@android:color/white"
-            android:layout_marginTop="10dp"/>
-
-        <Button
-            android:id="@+id/cancel_ride_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Cancel Ride"
-            android:backgroundTint="@android:color/holo_red_light"
-            android:textColor="@android:color/white"
-            android:layout_marginTop="10dp"/>
     </LinearLayout>
 
 </LinearLayout>

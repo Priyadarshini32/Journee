@@ -1,7 +1,12 @@
 package com.example.gps.activity
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.UnderlineSpan
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -23,7 +28,7 @@ class RegisterActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        // Initialize the SQLite helper
+        // Initialize SQLite helper
         sqliteHelper = SQLiteHelper(this)
 
         // Find views by ID
@@ -31,7 +36,18 @@ class RegisterActivity : ComponentActivity() {
         emailEditText = findViewById(R.id.email)
         passwordEditText = findViewById(R.id.password)
         registerButton = findViewById(R.id.book_ride_button)
-        signInTextView = findViewById(R.id.catchy_tagline) // TextView for "Already a User? Sign in Here"
+        signInTextView = findViewById(R.id.catchy_tagline2) // TextView for "Already a User? Sign in Here"
+
+        // Apply styling to "Sign in" text
+        val text = "Already a User? Sign in Here"
+        val spannable = SpannableString(text)
+        val startIndex = text.indexOf("Sign in")
+        val endIndex = startIndex + "Sign in".length
+
+        spannable.setSpan(ForegroundColorSpan(Color.BLACK), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(UnderlineSpan(), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        signInTextView.text = spannable
 
         // Set click listener for register button
         registerButton.setOnClickListener {
@@ -55,9 +71,9 @@ class RegisterActivity : ComponentActivity() {
             }
         }
 
-        // Set click listener for sign in text to navigate to LoginActivity
+        // Set click listener for "Sign in" text to navigate to LoginActivity
         signInTextView.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java) // Navigate to LoginActivity
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
         }
     }

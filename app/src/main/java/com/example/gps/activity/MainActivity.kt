@@ -1,7 +1,12 @@
 package com.example.gps.activity
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
+import android.text.style.UnderlineSpan
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -22,7 +27,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        // Initialize the SQLite helper
+        // Initialize SQLite helper
         sqliteHelper = SQLiteHelper(this)
 
         // Find views by ID
@@ -30,6 +35,17 @@ class MainActivity : ComponentActivity() {
         passwordEditText = findViewById(R.id.password)
         loginButton = findViewById(R.id.book_ride_button)
         signUpTextView = findViewById(R.id.catchy_tagline2) // TextView for "New User? Sign up Here"
+
+        // Apply styling to "Sign up" text
+        val text = "New User? Sign up Here"
+        val spannable = SpannableString(text)
+        val startIndex = text.indexOf("Sign up")
+        val endIndex = startIndex + "Sign up".length
+
+        spannable.setSpan(ForegroundColorSpan(Color.BLACK), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+        spannable.setSpan(UnderlineSpan(), startIndex, endIndex, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        signUpTextView.text = spannable
 
         // Set click listener for login button
         loginButton.setOnClickListener {
@@ -46,9 +62,9 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        // Set click listener for sign up text to navigate to RegisterActivity
+        // Set click listener for "Sign up" text to navigate to RegisterActivity
         signUpTextView.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java) // Navigate to RegisterActivity
+            val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
         }
     }

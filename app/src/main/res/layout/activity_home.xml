@@ -8,49 +8,60 @@
     tools:context=".activity.HomeActivity">
 
     <!-- Google Maps Fragment -->
+
+    <!-- From Location Autocomplete -->
+
+    <!-- To Location Autocomplete -->
+
+    <!-- Book Ride Button -->
     <fragment
         android:id="@+id/map_fragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="0dp"
-        android:layout_height="350dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="415dp"
+        android:layout_height="458dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- From Location Autocomplete -->
     <fragment
         android:id="@+id/from_location_autocomplete"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/map_fragment"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="370dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="24dp"
+        android:padding="8dp"
+        app:barrierMargin="1dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="8dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/map_fragment" />
 
-    <!-- To Location Autocomplete -->
     <fragment
         android:id="@+id/to_location_autocomplete"
         android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/from_location_autocomplete"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="367dp"
+        android:layout_height="28dp"
+        android:layout_marginTop="12dp"
+        android:padding="8dp"
+        app:barrierMargin="1dp"
         app:layout_constraintEnd_toEndOf="parent"
-        android:padding="8dp"/>
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/from_location_autocomplete" />
 
-    <!-- Book Ride Button -->
     <Button
         android:id="@+id/book_ride_button"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Book Ride"
+        style="?android:attr/buttonStyle"
+        android:layout_width="132dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="28dp"
+        android:backgroundTint="#3D9040"
+        android:fontFamily="@font/aclonica"
+        android:text="BOOK RIDE"
+        android:textColor="#FFFFFF"
         android:textSize="18sp"
-        android:backgroundTint="@android:color/holo_green_dark"
-        android:textColor="@android:color/white"
-        app:layout_constraintTop_toBottomOf="@id/to_location_autocomplete"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="16dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/to_location_autocomplete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
