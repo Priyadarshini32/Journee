@@ -10,41 +10,148 @@
 
     <RadioGroup
         android:id="@+id/vehicle_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@android:color/white"
-        android:padding="10dp"
-        android:elevation="4dp"
-        android:layout_marginBottom="20dp">
+        android:layout_width="342dp"
+        android:layout_height="416dp">
 
         <RadioButton
             android:id="@+id/radio_bike"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bike"/>
+            android:layout_width="99dp"
+            android:layout_height="53dp"
+            android:fontFamily="@font/abyssinica_sil"
+            android:text="Bike"
+            android:textColor="#395716"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="338dp"
+            android:layout_height="73dp">
+
+            <ImageView
+                android:layout_width="98dp"
+                android:layout_height="71dp"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/moto" />
+
+            <LinearLayout
+                android:layout_width="231dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp" />
+
+                <TextView
+                    android:id="@+id/radio_bike_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/abyssinica_sil"
+                    android:text="Estimated time : 60 mins\nPrice Rs 100.00"
+                    android:textColor="#192607"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
 
         <RadioButton
             android:id="@+id/radio_auto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Auto"/>
+            android:layout_width="99dp"
+            android:layout_height="52dp"
+            android:fontFamily="@font/abyssinica_sil"
+            android:text="Auto"
+            android:textColor="#395716"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <LinearLayout
+            android:layout_width="337dp"
+            android:layout_height="77dp">
+
+            <ImageView
+                android:layout_width="97dp"
+                android:layout_height="59dp"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/auto" />
+
+            <Space
+                android:layout_width="35dp"
+                android:layout_height="23dp"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="230dp"
+                android:layout_height="72dp"
+                android:orientation="vertical">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="12dp" />
+
+                <TextView
+                    android:id="@+id/radio_auto_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/abyssinica_sil"
+                    android:text="Estimated time : 60 mins\nPrice Rs 100.00"
+                    android:textColor="#192607"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </LinearLayout>
 
         <RadioButton
             android:id="@+id/radio_car"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Car"/>
+            android:layout_width="97dp"
+            android:layout_height="51dp"
+            android:fontFamily="@font/abyssinica_sil"
+            android:text="Cab"
+            android:textColor="#395716"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="337dp"
+            android:layout_height="74dp">
+
+            <ImageView
+                android:layout_width="98dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="12dp"
+                android:src="@drawable/cab" />
+
+            <LinearLayout
+                android:layout_width="219dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="14dp" />
+
+                <TextView
+                    android:id="@+id/radio_car_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/abyssinica_sil"
+                    android:text="Estimated time : 60 mins\nPrice Rs 100.00"
+                    android:textColor="#192607"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+        </LinearLayout>
     </RadioGroup>
 
     <Button
         android:id="@+id/confirm_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Confirm"
+        android:layout_height="57dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="@color/teal_700"
-        android:textColor="@android:color/white"
-        android:layout_marginTop="10dp"/>
+        android:text="Confirm"
+        android:textColor="@android:color/white" />
 
     <LinearLayout
         android:id="@+id/ride_details_layout"
@@ -84,7 +191,6 @@
             android:layout_marginTop="16dp"
             android:layout_gravity="center_horizontal"/>
 
-
         <Button
             android:id="@+id/start_ride_button"
             android:layout_width="wrap_content"
@@ -103,4 +209,5 @@
             android:textColor="@android:color/white"
             android:layout_marginTop="10dp"/>
     </LinearLayout>
+
 </LinearLayout>
