@@ -18,6 +18,7 @@ class SelectVehicleActivity : AppCompatActivity() {
     private lateinit var rideDetailsLayout: LinearLayout
     private lateinit var etaTextView: TextView
     private lateinit var dbHelper: SQLiteHelper
+    private var eta: String = "--"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +33,18 @@ class SelectVehicleActivity : AppCompatActivity() {
 
         rideDetailsLayout.visibility = View.GONE
 
-        val eta = intent.getStringExtra("selected_eta") ?: "--"
+        eta = intent.getStringExtra("selected_eta") ?: "--"
         etaTextView.text = "Estimated Arrival Time: $eta"
 
         insertDriversIfNeeded() // Insert drivers only if the DB is empty
 
         createNotificationChannel()
+
+        updatePrice() // Update prices when screen loads
+
+        vehicleGroup.setOnCheckedChangeListener { _, _ ->
+            updatePrice() // Update price when vehicle selection changes
+        }
 
         confirmButton.setOnClickListener {
             val selectedId = vehicleGroup.checkedRadioButtonId
@@ -47,6 +54,62 @@ class SelectVehicleActivity : AppCompatActivity() {
                 startDriverDetailsActivity()
             }
         }
+    }
+
+    private fun updatePrice() {
+        val totalMinutes = parseEtaToMinutes(eta)
+
+        // Define price per minute for each vehicle
+        val vehiclePrices = mapOf(
+            "Bike" to 2,
+            "Auto" to 3,
+            "Cab" to 5
+        )
+
+        // Update each vehicle's price in the UI
+        vehiclePrices.forEach { (vehicle, pricePerMinute) ->
+            val totalPrice = totalMinutes * pricePerMinute
+            val priceText = "Price Rs $totalPrice"
+
+            when (vehicle) {
+                "Bike" -> findViewById<TextView>(R.id.radio_bike_text).text = priceText
+                "Auto" -> findViewById<TextView>(R.id.radio_auto_text).text = priceText
+                "Cab"  -> findViewById<TextView>(R.id.radio_car_text).text = priceText
+            }
+        }
+    }
+
+    private fun parseEtaToMinutes(eta: String): Int {
+        val regex = Regex("(\\d+) hour? (\\d+) mins?")
+        val match = regex.find(eta)
+
+        return if (match != null) {
+            val (hours, minutes) = match.destructured
+            hours.toInt() * 60 + minutes.toInt()
+        } else {
+            0
+        }
+    }
+
+    private fun startDriverDetailsActivity() {
+        val selectedId = vehicleGroup.checkedRadioButtonId
+        val selectedRadioButton = findViewById<RadioButton>(selectedId)
+        val selectedVehicleType = selectedRadioButton.text.toString() // Get selected vehicle type
+
+        val driver = dbHelper.getRandomDriverByVehicleType(selectedVehicleType)
+
+        if (driver == null) {
+            Toast.makeText(this, "No drivers available for $selectedVehicleType", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val intent = Intent(this, ProgressActivity::class.java).apply {
+            putExtra("driver_name", driver.name)
+            putExtra("vehicle_type", selectedVehicleType)
+            putExtra("driver_contact", driver.contact)
+            putExtra("driver_experience", driver.experience)
+        }
+        startActivity(intent)
     }
 
     private fun insertDriversIfNeeded() {
@@ -80,29 +143,6 @@ class SelectVehicleActivity : AppCompatActivity() {
         }
     }
 
-    private fun startDriverDetailsActivity() {
-        val selectedId = vehicleGroup.checkedRadioButtonId
-        val selectedRadioButton = findViewById<RadioButton>(selectedId)
-        val selectedVehicleType = selectedRadioButton.text.toString() // Get selected vehicle type
-
-        val driver = dbHelper.getRandomDriverByVehicleType(selectedVehicleType)
-
-        if (driver == null) {
-            Toast.makeText(this, "No drivers available for $selectedVehicleType", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val intent = Intent(this, ProgressActivity::class.java).apply {
-            putExtra("driver_name", driver.name)
-            putExtra("vehicle_type", selectedVehicleType)
-            putExtra("driver_contact", driver.contact)
-            putExtra("driver_experience", driver.experience)
-        }
-        startActivity(intent)
-    }
-
-
-
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -117,12 +157,11 @@ class SelectVehicleActivity : AppCompatActivity() {
             notificationManager.createNotificationChannel(channel)
         }
     }
+
+    data class Quadruple<T1, T2, T3, T4>(
+        val first: T1,
+        val second: T2,
+        val third: T3,
+        val fourth: T4
+    )
 }
-
-
-data class Quadruple<T1, T2, T3, T4>(
-    val first: T1,
-    val second: T2,
-    val third: T3,
-    val fourth: T4
-)

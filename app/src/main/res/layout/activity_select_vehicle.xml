@@ -54,7 +54,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/alegreya"
-                    android:text="Estimated time : 60 mins\nPrice Rs 100.00"
+                    android:text="Price Rs --"
                     android:textColor="#663D01"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -90,7 +90,7 @@
                     android:layout_width="220dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/alegreya"
-                    android:text="Estimated time : 60 mins\nPrice Rs 100.00"
+                    android:text="Price Rs --"
                     android:textColor="#663D01"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -126,7 +126,7 @@
                     android:layout_width="208dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/alegreya"
-                    android:text="Estimated time : 60 mins\nPrice Rs 100.00"
+                    android:text="Price Rs --"
                     android:textColor="#663D01"
                     android:textSize="16sp" />
             </LinearLayout>
