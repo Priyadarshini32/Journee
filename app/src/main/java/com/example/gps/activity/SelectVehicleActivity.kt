@@ -116,25 +116,25 @@ class SelectVehicleActivity : AppCompatActivity() {
         if (dbHelper.getDriverCount() == 0) { // Check if DB is empty before inserting
             val drivers = listOf(
                 // Bike drivers
-                Quadruple("Ravi Kumar", "Bike", "9876543210", 5),
-                Quadruple("Suresh Sharma", "Bike", "9876543211", 7),
-                Quadruple("Anil Verma", "Bike", "9876543212", 6),
-                Quadruple("Manoj Singh", "Bike", "9876543213", 8),
-                Quadruple("Rajesh Gupta", "Bike", "9876543214", 9),
+                DriverDetails("Ravi Kumar", "Bike", "9876543210", 5),
+                DriverDetails("Suresh Sharma", "Bike", "9876543211", 7),
+                DriverDetails("Anil Verma", "Bike", "9876543212", 6),
+                DriverDetails("Manoj Singh", "Bike", "9876543213", 8),
+                DriverDetails("Rajesh Gupta", "Bike", "9876543214", 9),
 
                 // Auto drivers
-                Quadruple("Sunil Yadav", "Auto", "9876543225", 6),
-                Quadruple("Dinesh Patel", "Auto", "9876543226", 10),
-                Quadruple("Ganesh Iyer", "Auto", "9876543227", 5),
-                Quadruple("Mahesh Babu", "Auto", "9876543228", 7),
-                Quadruple("Ramesh Thakur", "Auto", "9876543229", 12),
+                DriverDetails("Sunil Yadav", "Auto", "9876543225", 6),
+                DriverDetails("Dinesh Patel", "Auto", "9876543226", 10),
+                DriverDetails("Ganesh Iyer", "Auto", "9876543227", 5),
+                DriverDetails("Mahesh Babu", "Auto", "9876543228", 7),
+                DriverDetails("Ramesh Thakur", "Auto", "9876543229", 12),
 
                 // Cab drivers
-                Quadruple("Arvind Tiwari", "Cab", "9876543240", 15),
-                Quadruple("Sameer Khan", "Cab", "9876543241", 20),
-                Quadruple("Himanshu Bhatt", "Cab", "9876543242", 11),
-                Quadruple("Krishna Nair", "Cab", "9876543243", 8),
-                Quadruple("Santosh Kumar", "Cab", "9876543244", 13)
+                DriverDetails("Arvind Tiwari", "Cab", "9876543240", 15),
+                DriverDetails("Sameer Khan", "Cab", "9876543241", 20),
+                DriverDetails("Himanshu Bhatt", "Cab", "9876543242", 11),
+                DriverDetails("Krishna Nair", "Cab", "9876543243", 8),
+                DriverDetails("Santosh Kumar", "Cab", "9876543244", 13)
             )
 
             for (driver in drivers) {
@@ -158,7 +158,7 @@ class SelectVehicleActivity : AppCompatActivity() {
         }
     }
 
-    data class Quadruple<T1, T2, T3, T4>(
+    data class DriverDetails<T1, T2, T3, T4>(
         val first: T1,
         val second: T2,
         val third: T3,
