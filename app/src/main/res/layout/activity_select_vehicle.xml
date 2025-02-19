@@ -47,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/abyssinica_sil"
-                    android:text="Estimated time : 60 mins\nPrice Rs 100.00"
+                    android:text="Estimated time : -- \nPrice Rs --"
                     android:textColor="#192607"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -96,7 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/abyssinica_sil"
-                    android:text="Estimated time : 60 mins\nPrice Rs 100.00"
+                    android:text="Estimated time : -- \nPrice Rs --"
                     android:textColor="#192607"
                     android:textSize="18sp" />
             </LinearLayout>
@@ -136,7 +136,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/abyssinica_sil"
-                    android:text="Estimated time : 60 mins\nPrice Rs 100.00"
+                    android:text="Estimated time : -- \nPrice Rs --"
                     android:textColor="#192607"
                     android:textSize="18sp" />
 
@@ -188,8 +188,18 @@
             android:text="Estimated Arrival Time: --"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:layout_gravity="center_horizontal"/>
+            android:textColor="@android:color/holo_green_dark"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:id="@+id/fare_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Estimated Fare: ₹--"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/holo_green_dark"
+            android:layout_marginBottom="12dp" />
 
         <Button
             android:id="@+id/start_ride_button"
