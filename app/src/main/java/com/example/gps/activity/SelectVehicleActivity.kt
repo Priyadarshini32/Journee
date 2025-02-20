@@ -33,6 +33,11 @@ class SelectVehicleActivity : AppCompatActivity() {
 
         rideDetailsLayout.visibility = View.GONE
 
+        findViewById<TextView>(R.id.bike_available).text = "Available: 5"
+        findViewById<TextView>(R.id.auto_available).text = "Available: 3"
+        findViewById<TextView>(R.id.car_available).text = "Available: 7"
+
+
         eta = intent.getStringExtra("selected_eta") ?: "--"
         etaTextView.text = "Estimated Arrival Time: $eta"
 
@@ -55,6 +60,8 @@ class SelectVehicleActivity : AppCompatActivity() {
             }
         }
     }
+
+
 
     private fun updatePrice() {
         val totalMinutes = parseEtaToMinutes(eta)
@@ -80,14 +87,14 @@ class SelectVehicleActivity : AppCompatActivity() {
     }
 
     private fun parseEtaToMinutes(eta: String): Int {
-        val regex = Regex("(\\d+) hour? (\\d+) mins?")
+        val regex = Regex("(\\d+) hours?(?: (\\d+) mins?)?")
         val match = regex.find(eta)
 
         return if (match != null) {
             val (hours, minutes) = match.destructured
             hours.toInt() * 60 + minutes.toInt()
         } else {
-            0
+            10
         }
     }
 
