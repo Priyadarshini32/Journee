@@ -18,6 +18,7 @@ class SelectVehicleActivity : AppCompatActivity() {
     private lateinit var rideDetailsLayout: LinearLayout
     private lateinit var etaTextView: TextView
     private lateinit var dbHelper: SQLiteHelper
+    private var eta: String = "--"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,12 +33,23 @@ class SelectVehicleActivity : AppCompatActivity() {
 
         rideDetailsLayout.visibility = View.GONE
 
-        val eta = intent.getStringExtra("selected_eta") ?: "--"
+        findViewById<TextView>(R.id.bike_available).text = "Available: 5"
+        findViewById<TextView>(R.id.auto_available).text = "Available: 3"
+        findViewById<TextView>(R.id.car_available).text = "Available: 7"
+
+
+        eta = intent.getStringExtra("selected_eta") ?: "--"
         etaTextView.text = "Estimated Arrival Time: $eta"
 
         insertDriversIfNeeded() // Insert drivers only if the DB is empty
 
         createNotificationChannel()
+
+        updatePrice() // Update prices when screen loads
+
+        vehicleGroup.setOnCheckedChangeListener { _, _ ->
+            updatePrice() // Update price when vehicle selection changes
+        }
 
         confirmButton.setOnClickListener {
             val selectedId = vehicleGroup.checkedRadioButtonId
@@ -49,34 +61,40 @@ class SelectVehicleActivity : AppCompatActivity() {
         }
     }
 
-    private fun insertDriversIfNeeded() {
-        if (dbHelper.getDriverCount() == 0) { // Check if DB is empty before inserting
-            val drivers = listOf(
-                // Bike drivers
-                Quadruple("Ravi Kumar", "Bike", "9876543210", 5),
-                Quadruple("Suresh Sharma", "Bike", "9876543211", 7),
-                Quadruple("Anil Verma", "Bike", "9876543212", 6),
-                Quadruple("Manoj Singh", "Bike", "9876543213", 8),
-                Quadruple("Rajesh Gupta", "Bike", "9876543214", 9),
 
-                // Auto drivers
-                Quadruple("Sunil Yadav", "Auto", "9876543225", 6),
-                Quadruple("Dinesh Patel", "Auto", "9876543226", 10),
-                Quadruple("Ganesh Iyer", "Auto", "9876543227", 5),
-                Quadruple("Mahesh Babu", "Auto", "9876543228", 7),
-                Quadruple("Ramesh Thakur", "Auto", "9876543229", 12),
 
-                // Cab drivers
-                Quadruple("Arvind Tiwari", "Cab", "9876543240", 15),
-                Quadruple("Sameer Khan", "Cab", "9876543241", 20),
-                Quadruple("Himanshu Bhatt", "Cab", "9876543242", 11),
-                Quadruple("Krishna Nair", "Cab", "9876543243", 8),
-                Quadruple("Santosh Kumar", "Cab", "9876543244", 13)
-            )
+    private fun updatePrice() {
+        val totalMinutes = parseEtaToMinutes(eta)
 
-            for (driver in drivers) {
-                dbHelper.insertDriver(driver.first, driver.second, driver.third, driver.fourth)
+        // Define price per minute for each vehicle
+        val vehiclePrices = mapOf(
+            "Bike" to 5,
+            "Auto" to 7,
+            "Cab" to 10
+        )
+
+        // Update each vehicle's price in the UI
+        vehiclePrices.forEach { (vehicle, pricePerMinute) ->
+            val totalPrice = totalMinutes * pricePerMinute
+            val priceText = "Price Rs $totalPrice"
+
+            when (vehicle) {
+                "Bike" -> findViewById<TextView>(R.id.radio_bike_text).text = priceText
+                "Auto" -> findViewById<TextView>(R.id.radio_auto_text).text = priceText
+                "Cab"  -> findViewById<TextView>(R.id.radio_car_text).text = priceText
             }
+        }
+    }
+
+    private fun parseEtaToMinutes(eta: String): Int {
+        val regex = Regex("(\\d+) hours?(?: (\\d+) mins?)?")
+        val match = regex.find(eta)
+
+        return if (match != null) {
+            val (hours, minutes) = match.destructured
+            hours.toInt() * 60 + minutes.toInt()
+        } else {
+            10
         }
     }
 
@@ -101,7 +119,36 @@ class SelectVehicleActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun insertDriversIfNeeded() {
+        if (dbHelper.getDriverCount() == 0) { // Check if DB is empty before inserting
+            val drivers = listOf(
+                // Bike drivers
+                DriverDetails("Ravi Kumar", "Bike", "9876543210", 5),
+                DriverDetails("Suresh Sharma", "Bike", "9876543211", 7),
+                DriverDetails("Anil Verma", "Bike", "9876543212", 6),
+                DriverDetails("Manoj Singh", "Bike", "9876543213", 8),
+                DriverDetails("Rajesh Gupta", "Bike", "9876543214", 9),
 
+                // Auto drivers
+                DriverDetails("Sunil Yadav", "Auto", "9876543225", 6),
+                DriverDetails("Dinesh Patel", "Auto", "9876543226", 10),
+                DriverDetails("Ganesh Iyer", "Auto", "9876543227", 5),
+                DriverDetails("Mahesh Babu", "Auto", "9876543228", 7),
+                DriverDetails("Ramesh Thakur", "Auto", "9876543229", 12),
+
+                // Cab drivers
+                DriverDetails("Arvind Tiwari", "Cab", "9876543240", 15),
+                DriverDetails("Sameer Khan", "Cab", "9876543241", 20),
+                DriverDetails("Himanshu Bhatt", "Cab", "9876543242", 11),
+                DriverDetails("Krishna Nair", "Cab", "9876543243", 8),
+                DriverDetails("Santosh Kumar", "Cab", "9876543244", 13)
+            )
+
+            for (driver in drivers) {
+                dbHelper.insertDriver(driver.first, driver.second, driver.third, driver.fourth)
+            }
+        }
+    }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -117,12 +164,11 @@ class SelectVehicleActivity : AppCompatActivity() {
             notificationManager.createNotificationChannel(channel)
         }
     }
+
+    data class DriverDetails<T1, T2, T3, T4>(
+        val first: T1,
+        val second: T2,
+        val third: T3,
+        val fourth: T4
+    )
 }
-
-
-data class Quadruple<T1, T2, T3, T4>(
-    val first: T1,
-    val second: T2,
-    val third: T3,
-    val fourth: T4
-)
